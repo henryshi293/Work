@@ -2,23 +2,58 @@
 
   <head>
     <title>Homepage</title>
+    <link rel='stylesheet' href='style.css'>
+    <!-- Internal CSS uses the style tag-->
+    <style>
+      li{
+        font-family: Brush Script MT;
+      }
+
+      #spiderman {
+        padding: 5px;
+        font-size: 2em;
+        color: red;
+      }
+      #loki {
+        padding: 5px;
+        font-size: 2em;
+        color: green;
+      }
+      #ironman {
+        padding: 5px;
+        font-size: 2em;
+        color: gold;
+      }
+      #blackpanther {
+        padding: 5px;
+        font-size: 2em;
+        color: black;
+      }
+      #wintersoldier {
+        padding: 5px;
+        font-size: 2em;
+        color: darkblue;
+      }
+    </style>
   </head>
 
   <body>
-    <h1>Home</h1>
-    <p>Welcome to my <a href="http://www.cnn.com">home<a/> page!</p>
+    <a href="about.html">About</a>
+    <h1 style="color:Blue">Home</h1>
+    <p>Welcome to my home page!</p>
     <h3>Favorite 5 Marvel Characters:</h3>
     <ol>
-      <li>Spiderman</li>
-      <img src='spiderman.jpg'width='400'>
-      <li>Loki</li>
-      <img src='loki.jpg'width='400'>
-      <li>Ironman</li>
-      <img src='ironman.jpg'width='400'>
-      <li>Black Panther</li>
-      <img src='blackpanther.jpg'width='400'>
-      <li>Winter Soldier</li>
-      <img src='wintersoldier.jpg'width='400'>
+      <!-- Inline CSS, put CSS in actual tag -->
+      <li id='spiderman'>Spiderman</li>
+      <img src='spiderman.jpg' style='width:350px'>
+      <li id='loki'>Loki</li>
+      <img src='loki.jpg'style='width:350px'>
+      <li id='ironman'>Ironman</li>
+      <img src='ironman.jpg'style='width:350px'>
+      <li id='blackpanther'>Black Panther</li>
+      <img src='blackpanther.jpg'style='width:350px'>
+      <li id='wintersoldier'>Winter Soldier</li>
+      <img src='wintersoldier.jpg'style='width:350px' >
     </ol>
 
   </body>
