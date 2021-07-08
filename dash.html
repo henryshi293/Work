@@ -2,86 +2,113 @@
   <head>
     <title >Dashboard</title>
     <!-- Compiled and minified CSS -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css"
-    <!-- Compiled and minified JavaScript -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <script src = 'https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js'></script>
     <!-- Leaflet.js GIS links -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <link rel="icon" href="covid.png" type="image/x-icon"/>
+    <!-- chart -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
 
     <style>
       .size {
-        height:950px;
+        height:920px;
       }
-    </style>
 
+    </style>
 
   </head>
 
-  <body>
+  <body style="background-color:black">
     <nav>
-      <div class="nav-wrapper #1a237e indigo darken-4">
-        <a href="#" class="brand-logo center white-text" style="padding-left:30px;"><b>Dashboard</b></a>
+      <div class="nav-wrapper #1a237e indigo darken-4" >
+        <a href="#" class="brand-logo center white-text"><b>Welcome to COVID Data Dashboard</b></a>
       </div>
     </nav>
 
     <div class="row">
-      <div class="col s12 m6" >
+      <div class="col s12 m6">
         <div class="z-depth-5">
-          <div class="card red">
+          <div class="card #37474f blue-grey darken-3 white-context">
             <div class="size">
               <div class="card-content">
-                <span class="card-title" style="color:white"><b>Top 10 COVID Confirmed</b></span>
-                <div id="output"></div>
+                <span class="card-title center" style="color:white"><h3><b>Map of Confirmed Cases Worldwide</b></h3></span>
+                <div style="float:left">
+                  <p>
+                    <span style="background-color: red; font-size:20px">Top 10 Confirmed</span>
+                    <span style="background-color: orange; font-size:20px">11-100</span>
+                    <span style="background-color: yellow; font-size:20px">101-200</span>
+                    <span style="background-color: green; font-size:20px">After 200</span>
+                  </p>
+                </div>
+                <div id="map" style="width:100%;height:80%;background-color:grey"></div>
               </div>
             </div>
           </div>
         </div>
-      </div> <!-- end of first card -->
-      <div class="col s12 m6">
+      </div>
+
+      <div class="col s12 m2" >
         <div class="z-depth-5">
-          <div class="card grey white-text">
+          <div class="card #37474f blue-grey darken-3 white-context">
             <div class="size">
               <div class="card-content">
-                <span class="card-title"><b>Map</b></span>
-                <div style="float:left">
-                  <ul>
-                    <div style='color:red'><h6>Top 10 Confirmed</h6></div>
-                    <div style='color:orange'><h6>11-100</h6></div>
-                    <div style='color:yellow'><h6>101-200</h6></div>
-                    <div style='color:green'><h6>After 200</h6></div>
-                  </ul>
-                </div>
-                <br>
-                <div id="map" style="width:100%;height:77%"></div>
+                <h3 style="color:white"><b>Total Confirmed</b></h3>
+                <div id="confirmed" style="color:red;font-size:40px"></div><br>
+                <span class="card-title" style="color:white"><b>Top 10</b></span>
               </div>
+              <div id="output"></div>
             </div>
           </div>
-        </div> <!-- end of second card -->
-      </div>
+        </div>
+      </div> <!-- end of second card -->
+
+      <div class="col s12 m2">
+        <div class="card #37474f blue-grey darken-3 white-context">
+          <div class="size">
+            <div class="card-content white-text">
+              <h3 style="color:white"><b>Total Deaths</b></h3>
+              <div id="deaths" style="color:orange;font-size:40px"></div><br>
+              <span class="card-title" style="color:white"><b>Top 10</b></span>
+            </div>
+            <div id="outputD"></div>
+          </div>
+        </div>
+      </div><!--End of third card-->
+
+       <div class="col s12 m2">
+         <div class="card #37474f blue-grey darken-3 white-context">
+           <div class="size">
+           <div class="card-content white-text">
+             <h3 style="color:white"><b>Total Recovered</b></h3>
+             <div id="recovered" style="color:green;font-size:40px"></div><br>
+             <span class="card-title" style="color:white"><b>Top 10</b></span>
+           </div>
+           <div id="outputR"></div>
+         </div>
+         </div>
+       </div><!--End of fourth card-->
     </div> <!-- end of 1st row -->
 
     <div class="row">
       <div class="col s12 m6">
         <div class="z-depth-5">
-          <div class="card #ffd740 amber accent-2 white-text">
+          <div class="card #37474f blue-grey darken-3 white-context white-text">
             <div class="card-content">
-              <span class="card-title">Card Title</span>
-              <p>I am a very simple card. I am good at containing small bits of information.
-              I am convenient because I require little markup to use effectively.</p>
+              <canvas id="bar-chart-horizontal" width="100%" height="60%"></canvas>
             </div>
           </div>
-        </div>
-      </div> <!-- end of first card -->
+        </div> <!-- end of first card -->
+      </div>
+
       <div class="col s12 m6">
         <div class="z-depth-5">
-          <div class="card #ffca28 amber lighten-1 white-text">
+          <div class="card #37474f blue-grey darken-3 white-context white-text">
             <div class="card-content">
-              <span class="card-title">Card Title</span>
-              <p>I am a very simple card. I am good at containing small bits of information.
-              I am convenient because I require little markup to use effectively.</p>
+              <canvas id="doughnut-chart" width="100%" height="60%"></canvas>
             </div>
           </div>
         </div>
@@ -96,12 +123,41 @@
         console.log(response.data.data);
         buildList(response.data.data);  //Call the buildList function
         mapAlgo(response.data.data);
+        totalConfirmed(response.data.data);
+        buildRList(response.data.data);
+        totalRecovered(response.data.data);
+        totalDead(response.data.data);
+        buildDList(response.data.data);
+        hBarChart(response.data.data);
+        doughnutChart(response.data.data);
       })
 
+      function totalConfirmed(data) {
+        var eHandle = document.getElementById("confirmed")
+        var totalC = 0;
+        for (i=0;i<data.length;i++){
+          totalC += data[i].confirmed;
+        }
+        eHandle.innerHTML = totalC;
+      }
 
+      function totalRecovered(data) {
+        var rHandle = document.getElementById("recovered")
+        var totalr = 0;
+        for (i=0;i<data.length;i++){
+          totalr += data[i].recovered;
+        }
+        rHandle.innerHTML = totalr;
+      }
 
-
-       //Called mapIt()function
+      function totalDead(data) {
+        var sHandle = document.getElementById("deaths")
+        var totalD = 0;
+        for (i=0;i<data.length;i++){
+          totalD += data[i].dead;
+        }
+        sHandle.innerHTML = totalD;
+      }
 
       function mapAlgo(response) {
         var map = L.map('map').setView([25, 5], 2);
@@ -149,15 +205,108 @@
         });
 
         for (i=0;i<10;i++) {
-          myHTML = myHTML + "<li class='collection-item #bbdefb blue lighten-4'>"+
-          "<span class='title'>" + "<b>"+data[i].location+
-          "</b>"+"</span>"+ "<p>" +"Confirmed" + "<span class='badge' style='color:green'>"
-          +data[i].confirmed+"</span>"+"<br>"+ "Deaths"+"<span class='badge' style='color:red'>"+
-          data[i].dead+"</span>"+"</p>" +"</li>";
+          myHTML = myHTML + "<li class='collection-item #37474f blue-grey darken-3'><span class='title' style='color:white'><h6><b>"+
+          data[i].location+"</b></span>"+"<span class='badge' style='color:red'><h6><b>"
+          +data[i].confirmed+"</b></h6></span></li>";
         }
         myHTML = myHTML + "</ul>"
         dHandle.innerHTML = myHTML;
       }
-  </script>
 
+      function buildRList(data) {
+        var rHandle = document.getElementById("outputR");
+        var myHTML = "<ul class='collection'>";
+
+        data.sort(function(a,b) {
+          return b.recovered - a.recovered;
+        });
+
+        for (i=0;i<10;i++) {
+          myHTML = myHTML + "<li class='collection-item #37474f blue-grey darken-3'><span class='title' style='color:white'><h6><b>"+
+          data[i].location+"</b></span>"+"<span class='badge' style='color:green'><b><h6>"
+          +data[i].recovered+"</b></h6></span></li>";
+        }
+        myHTML = myHTML + "</ul>"
+        rHandle.innerHTML = myHTML;
+      }
+
+      function buildDList(data) {
+        var sHandle = document.getElementById("outputD");
+        var myHTML = "<ul class='collection'>";
+
+        data.sort(function(a,b) {
+          return b.dead - a.dead;
+        });
+
+        for (i=0;i<10;i++) {
+          myHTML = myHTML + "<li class='collection-item #37474f blue-grey darken-3'><span class='title' style='color:white'><h6><b>"+
+          data[i].location+"</b></span>"+"<span class='badge' style='color:orange'><h6><b>"
+          +data[i].dead+"</b></h6></span></li>";
+        }
+        myHTML = myHTML + "</ul>"
+        sHandle.innerHTML = myHTML;
+      }
+
+      function hBarChart(cdata) {
+        var labarray = [];
+        var deathR = [];
+        for (i=0;i<10;i++) {
+          labarray.push(cdata[i].location);
+          deathR.push(cdata[i].dead/cdata[i].confirmed);
+
+        }
+
+        new Chart(document.getElementById("bar-chart-horizontal"), {
+          type: 'horizontalBar',
+          data: {
+            labels: labarray,
+            datasets: [
+              {
+                label: "Population (millions)",
+                backgroundColor: ["#3e95cd", "#8e5ea2","#3cba9f","#e8c3b9","#c45850","#ffc107",
+                "#76ff03","#ec407a ","#5d4037 ","#263238"],
+                data: deathR,
+              }
+            ]
+          },
+          options: {
+            legend: { display: false },
+            title: {
+              display: true,
+              text: 'Death Rate in the COVID Pandemic'
+            }
+          }
+      });
+    }
+      function doughnutChart(cdata) {
+
+        var labarray = [];
+        var dataarray = [];
+        for (i=0;i<10;i++) {
+          labarray.push(cdata[i].location);
+          dataarray.push(cdata[i].confirmed);
+
+          new Chart(document.getElementById("doughnut-chart"), {
+            type: 'doughnut',
+            data: {
+              labels: labarray,
+              datasets: [
+                {
+                  label: "Population (millions)",
+                  backgroundColor: ["#3e95cd", "#8e5ea2","#3cba9f","#e8c3b9","#c45850","#ffc107",
+                  "#76ff03","#ec407a ","#5d4037 ","#263238"],
+                  data: dataarray,
+                }
+              ]
+            },
+            options: {
+              title: {
+                display: true,
+                text: 'Confrimed Cases in the COVID Pandemic'
+              }
+            }
+          });
+      }
+    }
+  </script>
 </html>
